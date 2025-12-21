@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.StockRecord;
 import com.example.demo.service.StockRecordService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/stocks")
 @RequiredArgsConstructor
+@Tag(name = "Stock Records")
 public class StockRecordController {
 
     private final StockRecordService stockRecordService;
@@ -23,11 +25,6 @@ public class StockRecordController {
         return stockRecordService.createStockRecord(productId, warehouseId, record);
     }
 
-    @GetMapping("/{id}")
-    public StockRecord getStockRecord(@PathVariable Long id) {
-        return stockRecordService.getStockRecord(id);
-    }
-
     @GetMapping("/product/{productId}")
     public List<StockRecord> getByProduct(@PathVariable Long productId) {
         return stockRecordService.getRecordsBy_product(productId);
@@ -36,5 +33,10 @@ public class StockRecordController {
     @GetMapping("/warehouse/{warehouseId}")
     public List<StockRecord> getByWarehouse(@PathVariable Long warehouseId) {
         return stockRecordService.getRecordsByWarehouse(warehouseId);
+    }
+
+    @GetMapping("/{id}")
+    public StockRecord getStockRecord(@PathVariable Long id) {
+        return stockRecordService.getStockRecord(id);
     }
 }

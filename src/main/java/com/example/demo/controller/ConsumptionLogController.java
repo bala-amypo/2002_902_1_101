@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.ConsumptionLog;
 import com.example.demo.service.ConsumptionLogService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/consumption")
 @RequiredArgsConstructor
+@Tag(name = "Consumption Logs")
 public class ConsumptionLogController {
 
     private final ConsumptionLogService consumptionLogService;
