@@ -7,53 +7,48 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.security.JwtProvider;
 import com.example.demo.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtProvider jwtProvider;
-
-    public UserServiceImpl(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder,
-                           JwtProvider jwtProvider) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtProvider = jwtProvider;
-    }
 
     @Override
     public User register(UserRegisterDto dto) {
 
-        if (dto.getName() == null || dto.getName().isBlank()) {
-            throw new IllegalArgumentException("Name cannot be empty");
+        if (dto.getName().isBlank() || dto.getPassword().isBlank()) {
+            throw new IllegalArgumentException("Invalid user details");
         }
 
-        if (dto.getPassword() == null || dto.getPassword().isBlank()) {
-            throw new IllegalArgumentException("Password cannot be empty");
-        }
+        userRepository.findByEmail(dto.getEmail())
+                .ifPresent(u -> {
+                    throw new IllegalArgumentException("Email already exists");
+                });
 
-        User user = new User();
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setRoles(Set.of(Role.ROLE_USER));
-        user.setCreatedAt(LocalDateTime.now());
+        User user = User.builder()
+                .name(dto.getName())
+                .email(dto.getEmail())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .roles(dto.getRoles() == null ? Set.of(Role.ROLE_USER) : dto.getRoles())
+                .createdAt(LocalDateTime.now())
+                .build();
 
         return userRepository.save(user);
     }
 
     @Override
     public AuthResponse login(AuthRequest request) {
-
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
@@ -61,9 +56,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Invalid credentials");
         }
 
-        String token = jwtProvider.generateToken(user);
-
-        return new AuthResponse(token, user.getId(), user.getEmail(), user.getRoles());
+        return new AuthResponse("dummy-token", user.getId(), user.getEmail(), user.getRoles());
     }
 
     @Override

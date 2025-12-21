@@ -8,25 +8,21 @@ import com.example.demo.repository.ProductRepository;
 import com.example.demo.repository.StockRecordRepository;
 import com.example.demo.repository.WarehouseRepository;
 import com.example.demo.service.StockRecordService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class StockRecordServiceImpl implements StockRecordService {
 
-    private final StockRecordRepository stockRecordRepository;
     private final ProductRepository productRepository;
     private final WarehouseRepository warehouseRepository;
-
-    public StockRecordServiceImpl(StockRecordRepository stockRecordRepository,
-                                  ProductRepository productRepository,
-                                  WarehouseRepository warehouseRepository) {
-        this.stockRecordRepository = stockRecordRepository;
-        this.productRepository = productRepository;
-        this.warehouseRepository = warehouseRepository;
-    }
+    private final StockRecordRepository stockRecordRepository;
 
     @Override
     public StockRecord createStockRecord(Long productId, Long warehouseId, StockRecord record) {
@@ -37,19 +33,16 @@ public class StockRecordServiceImpl implements StockRecordService {
         Warehouse warehouse = warehouseRepository.findById(warehouseId)
                 .orElseThrow(() -> new ResourceNotFoundException("Warehouse not found"));
 
-        List<StockRecord> existing = stockRecordRepository.findByProductId(productId);
-        for (StockRecord sr : existing) {
-            if (sr.getWarehouse().getId().equals(warehouseId)) {
-                throw new IllegalArgumentException("StockRecord already exists");
-            }
+        boolean exists = stockRecordRepository.findByProductId(productId)
+                .stream()
+                .anyMatch(r -> r.getWarehouse().getId().equals(warehouseId));
+
+        if (exists) {
+            throw new IllegalArgumentException("StockRecord already exists");
         }
 
-        if (record.getCurrentQuantity() < 0) {
+        if (record.getCurrentQuantity() < 0 || record.getReorderThreshold() <= 0) {
             throw new IllegalArgumentException("Invalid quantity");
-        }
-
-        if (record.getReorderThreshold() <= 0) {
-            throw new IllegalArgumentException("Invalid reorder threshold");
         }
 
         record.setProduct(product);
