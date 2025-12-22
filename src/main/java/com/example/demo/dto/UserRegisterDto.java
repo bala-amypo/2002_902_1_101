@@ -4,11 +4,21 @@ import java.util.List;
 
 public class UserRegisterDto {
 
+    private String name;        // ✅ ADD THIS
     private String email;
     private String password;
     private List<String> roles;
 
     public UserRegisterDto() {}
+
+    // ✅ ADD THESE
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getEmail() {
         return email;
