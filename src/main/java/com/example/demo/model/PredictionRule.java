@@ -1,10 +1,16 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "prediction_rules")
 public class PredictionRule {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String ruleName;
     private Integer averageDaysWindow;
     private Integer minDailyUsage;

@@ -15,13 +15,11 @@ public class AuthController {
     @Autowired
     private UserService userService;
 
-    // ✅ REGISTER
     @PostMapping("/register")
     public AuthResponse register(@RequestBody UserRegisterDto dto) {
         return userService.register(dto);
     }
 
-    // ✅ LOGIN
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
         return userService.login(request);
