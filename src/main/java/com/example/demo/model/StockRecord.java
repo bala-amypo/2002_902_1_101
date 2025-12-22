@@ -1,14 +1,28 @@
 package com.example.demo.model;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "stock_records")
 public class StockRecord {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id", nullable = false)
     private Warehouse warehouse;
+
     private Integer currentQuantity;
+
     private Integer reorderThreshold;
+
     private LocalDateTime lastUpdated;
 
     public StockRecord() {}
