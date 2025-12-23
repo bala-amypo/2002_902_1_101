@@ -8,10 +8,14 @@ import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.UserRegisterDto;
 import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -25,7 +29,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setRoles(dto.getRoles());
 
-        // Normally: userRepository.save(user);
+        userRepository.save(user);
 
         return new AuthResponse(
                 user.getId(),
@@ -37,8 +41,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public AuthResponse login(AuthRequest request) {
 
-        // Normally fetch from DB using email
-        User user = getByEmail(request.getEmail());
+        User user = userRepository
+                .findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         return new AuthResponse(
                 user.getId(),
@@ -49,14 +54,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getByEmail(String email) {
-
-        // Dummy implementation for now
-        User user = new User();
-        user.setId(1L);
-        user.setEmail(email);
-        user.setName("Demo User");
-        user.setRoles(null);
-
-        return user;
+        return userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

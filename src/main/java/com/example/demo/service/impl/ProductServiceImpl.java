@@ -1,47 +1,36 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.Product;
-import com.example.demo.repository.ProductRepository;
-import com.example.demo.service.ProductService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.Product;
+import com.example.demo.repository.ProductRepository;
+import com.example.demo.service.ProductService;
+
 @Service
-@RequiredArgsConstructor
-@Transactional
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
-    public Product createProduct(Product product) {
-
-        if (product.getProductName() == null || product.getProductName().isBlank()) {
-            throw new IllegalArgumentException("Product name cannot be empty");
-        }
-
-        productRepository.findBySku(product.getSku())
-                .ifPresent(p -> {
-                    throw new IllegalArgumentException("SKU already exists");
-                });
-
+    public Product create(Product product) {
         product.setCreatedAt(LocalDateTime.now());
         return productRepository.save(product);
     }
 
     @Override
-    public Product getProduct(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+    public List<Product> getAll() {
+        return productRepository.findAll();
     }
 
     @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public Product getById(Long id) {
+        return productRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
     }
 }
