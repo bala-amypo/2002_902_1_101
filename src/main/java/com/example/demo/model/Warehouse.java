@@ -15,12 +15,20 @@ public class Warehouse {
     private String location;
     private LocalDateTime createdAt;
 
-    public Warehouse() {}
+    public Warehouse() {
+    }
+
+    public Warehouse(Long id, String warehouseName, String location, LocalDateTime createdAt) {
+        this.id = id;
+        this.warehouseName = warehouseName;
+        this.location = location;
+        this.createdAt = createdAt;
+    }
 
     public Long getId() {
         return id;
     }
-
+ 
     public void setId(Long id) {
         this.id = id;
     }
@@ -28,7 +36,7 @@ public class Warehouse {
     public String getWarehouseName() {
         return warehouseName;
     }
-
+ 
     public void setWarehouseName(String warehouseName) {
         this.warehouseName = warehouseName;
     }
@@ -36,7 +44,7 @@ public class Warehouse {
     public String getLocation() {
         return location;
     }
-
+ 
     public void setLocation(String location) {
         this.location = location;
     }
@@ -44,7 +52,7 @@ public class Warehouse {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
+ 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }

@@ -12,25 +12,33 @@ public class StockRecord {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @ManyToOne
-    @JoinColumn(name = "warehouse_id", nullable = false)
     private Warehouse warehouse;
 
     private Integer currentQuantity;
-
     private Integer reorderThreshold;
-
     private LocalDateTime lastUpdated;
 
-    public StockRecord() {}
+    public StockRecord() {
+    }
+
+    public StockRecord(Long id, Product product, Warehouse warehouse,
+                       Integer currentQuantity, Integer reorderThreshold,
+                       LocalDateTime lastUpdated) {
+        this.id = id;
+        this.product = product;
+        this.warehouse = warehouse;
+        this.currentQuantity = currentQuantity;
+        this.reorderThreshold = reorderThreshold;
+        this.lastUpdated = lastUpdated;
+    }
 
     public Long getId() {
         return id;
     }
-
+ 
     public void setId(Long id) {
         this.id = id;
     }
@@ -38,7 +46,7 @@ public class StockRecord {
     public Product getProduct() {
         return product;
     }
-
+ 
     public void setProduct(Product product) {
         this.product = product;
     }
@@ -46,7 +54,7 @@ public class StockRecord {
     public Warehouse getWarehouse() {
         return warehouse;
     }
-
+ 
     public void setWarehouse(Warehouse warehouse) {
         this.warehouse = warehouse;
     }
@@ -54,7 +62,7 @@ public class StockRecord {
     public Integer getCurrentQuantity() {
         return currentQuantity;
     }
-
+ 
     public void setCurrentQuantity(Integer currentQuantity) {
         this.currentQuantity = currentQuantity;
     }
@@ -62,7 +70,7 @@ public class StockRecord {
     public Integer getReorderThreshold() {
         return reorderThreshold;
     }
-
+ 
     public void setReorderThreshold(Integer reorderThreshold) {
         this.reorderThreshold = reorderThreshold;
     }
@@ -70,7 +78,7 @@ public class StockRecord {
     public LocalDateTime getLastUpdated() {
         return lastUpdated;
     }
-
+ 
     public void setLastUpdated(LocalDateTime lastUpdated) {
         this.lastUpdated = lastUpdated;
     }

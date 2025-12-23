@@ -11,15 +11,19 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String productName;
-
-    @Column(nullable = false, unique = true)
     private String sku;
-
     private LocalDateTime createdAt;
 
-    public Product() {}
+    public Product() {
+    }
+
+    public Product(Long id, String productName, String sku, LocalDateTime createdAt) {
+        this.id = id;
+        this.productName = productName;
+        this.sku = sku;
+        this.createdAt = createdAt;
+    }
 
     public Long getId() {
         return id;
@@ -32,7 +36,7 @@ public class Product {
     public String getProductName() {
         return productName;
     }
-
+ 
     public void setProductName(String productName) {
         this.productName = productName;
     }
@@ -40,7 +44,7 @@ public class Product {
     public String getSku() {
         return sku;
     }
-
+ 
     public void setSku(String sku) {
         this.sku = sku;
     }
@@ -48,7 +52,7 @@ public class Product {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
+ 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }

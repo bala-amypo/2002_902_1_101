@@ -21,8 +21,20 @@ public class User {
     @ElementCollection
     private List<String> roles;
 
-    public User() {}
+    // ✅ Default constructor
+    public User() {
+    }
 
+    // ✅ Parameterized constructor
+    public User(Long id, String name, String email, String password, List<String> roles) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    // ✅ Getters & Setters
     public Long getId() {
         return id;
     }

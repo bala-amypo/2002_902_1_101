@@ -1,33 +1,32 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Warehouse;
-import com.example.demo.service.WarehouseService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.model.Warehouse;
+import com.example.demo.service.WarehouseService;
+
 @RestController
-@RequestMapping("/api/warehouses")
-@RequiredArgsConstructor
-@Tag(name = "Warehouses")
+@RequestMapping("/warehouses")
 public class WarehouseController {
 
-    private final WarehouseService warehouseService;
+    @Autowired
+    private WarehouseService warehouseService;
 
     @PostMapping
-    public Warehouse createWarehouse(@RequestBody Warehouse warehouse) {
-        return warehouseService.createWarehouse(warehouse);
+    public Warehouse create(@RequestBody Warehouse warehouse) {
+        return warehouseService.create(warehouse);
     }
 
     @GetMapping
-    public List<Warehouse> getAllWarehouses() {
-        return warehouseService.getAllWarehouses();
+    public List<Warehouse> getAll() {
+        return warehouseService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Warehouse getWarehouse(@PathVariable Long id) {
-        return warehouseService.getWarehouse(id);
+    public Warehouse getById(@PathVariable Long id) {
+        return warehouseService.getById(id);
     }
 }

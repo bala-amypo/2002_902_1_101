@@ -1,33 +1,32 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Product;
-import com.example.demo.service.ProductService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.model.Product;
+import com.example.demo.service.ProductService;
+
 @RestController
-@RequestMapping("/api/products")
-@RequiredArgsConstructor
-@Tag(name = "Products")
+@RequestMapping("/products")
 public class ProductController {
 
-    private final ProductService productService;
+    @Autowired
+    private ProductService productService;
 
     @PostMapping
-    public Product createProduct(@RequestBody Product product) {
-        return productService.createProduct(product);
+    public Product create(@RequestBody Product product) {
+        return productService.create(product);
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public List<Product> getAll() {
+        return productService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable Long id) {
-        return productService.getProduct(id);
+    public Product getById(@PathVariable Long id) {
+        return productService.getById(id);
     }
 }
