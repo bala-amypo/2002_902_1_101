@@ -16,19 +16,16 @@ public class PredictionController {
     @Autowired
     private PredictionService predictionService;
 
-    // 🔮 Predict restock date based on stock record ID
     @GetMapping("/restock-date/{stockRecordId}")
     public LocalDate predictRestockDate(@PathVariable Long stockRecordId) {
         return predictionService.predictRestockDate(stockRecordId);
     }
 
-    // ➕ Create a new prediction rule
     @PostMapping("/rules")
     public PredictionRule createRule(@RequestBody PredictionRule rule) {
         return predictionService.createRule(rule);
     }
 
-    // 📄 Get all prediction rules
     @GetMapping("/rules")
     public List<PredictionRule> getAllRules() {
         return predictionService.getAllRules();
