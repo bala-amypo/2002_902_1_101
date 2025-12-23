@@ -1,36 +1,32 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.ConsumptionLog;
-import com.example.demo.service.ConsumptionLogService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.model.ConsumptionLog;
+import com.example.demo.service.ConsumptionLogService;
+
 @RestController
-@RequestMapping("/api/consumption")
-@RequiredArgsConstructor
-@Tag(name = "Consumption Logs")
+@RequestMapping("/consumption-logs")
 public class ConsumptionLogController {
 
-    private final ConsumptionLogService consumptionLogService;
+    @Autowired
+    private ConsumptionLogService consumptionLogService;
 
-    @PostMapping("/{stockRecordId}")
-    public ConsumptionLog logConsumption(
-            @PathVariable Long stockRecordId,
-            @RequestBody ConsumptionLog log) {
-
-        return consumptionLogService.logConsumption(stockRecordId, log);
+    @PostMapping
+    public ConsumptionLog create(@RequestBody ConsumptionLog log) {
+        return consumptionLogService.create(log);
     }
 
-    @GetMapping("/record/{stockRecordId}")
-    public List<ConsumptionLog> getLogsByStockRecord(@PathVariable Long stockRecordId) {
-        return consumptionLogService.getLogsByStockRecord(stockRecordId);
+    @GetMapping
+    public List<ConsumptionLog> getAll() {
+        return consumptionLogService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ConsumptionLog getLog(@PathVariable Long id) {
-        return consumptionLogService.getLog(id);
+    public ConsumptionLog getById(@PathVariable Long id) {
+        return consumptionLogService.getById(id);
     }
 }

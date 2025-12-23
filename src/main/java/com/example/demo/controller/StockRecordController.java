@@ -1,42 +1,32 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.StockRecord;
-import com.example.demo.service.StockRecordService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.model.StockRecord;
+import com.example.demo.service.StockRecordService;
+
 @RestController
-@RequestMapping("/api/stocks")
-@RequiredArgsConstructor
-@Tag(name = "Stock Records")
+@RequestMapping("/stock-records")
 public class StockRecordController {
 
-    private final StockRecordService stockRecordService;
+    @Autowired
+    private StockRecordService stockRecordService;
 
-    @PostMapping("/{productId}/{warehouseId}")
-    public StockRecord createStockRecord(
-            @PathVariable Long productId,
-            @PathVariable Long warehouseId,
-            @RequestBody StockRecord record) {
-
-        return stockRecordService.createStockRecord(productId, warehouseId, record);
+    @PostMapping
+    public StockRecord create(@RequestBody StockRecord record) {
+        return stockRecordService.create(record);
     }
 
-    @GetMapping("/product/{productId}")
-    public List<StockRecord> getByProduct(@PathVariable Long productId) {
-        return stockRecordService.getRecordsBy_product(productId);
-    }
-
-    @GetMapping("/warehouse/{warehouseId}")
-    public List<StockRecord> getByWarehouse(@PathVariable Long warehouseId) {
-        return stockRecordService.getRecordsByWarehouse(warehouseId);
+    @GetMapping
+    public List<StockRecord> getAll() {
+        return stockRecordService.getAll();
     }
 
     @GetMapping("/{id}")
-    public StockRecord getStockRecord(@PathVariable Long id) {
-        return stockRecordService.getStockRecord(id);
+    public StockRecord getById(@PathVariable Long id) {
+        return stockRecordService.getById(id);
     }
 }

@@ -1,21 +1,20 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.PredictionRule;
-import com.example.demo.service.PredictionService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/predict")
-@RequiredArgsConstructor
-@Tag(name = "Predictions")
-public class PredictionController {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
-    private final PredictionService predictionService;
+import com.example.demo.model.PredictionRule;
+import com.example.demo.service.PredictionService;
+
+@RestController
+@RequestMapping("/predict")
+public class PredictionRuleController {
+
+    @Autowired
+    private PredictionService predictionService;
 
     @GetMapping("/restock-date/{stockRecordId}")
     public LocalDate predictRestockDate(@PathVariable Long stockRecordId) {
