@@ -1,4 +1,4 @@
-wpackage com.example.demo.dto;
+wwpackage com.example.demo.dto;
 
 import java.util.List;
 
