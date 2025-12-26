@@ -1,10 +1,25 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Warehouse;
+import com.example.demo.repository.WarehouseRepository;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
-public interface WarehouseService {
-    Warehouse save(Warehouse warehouse);
-    List<Warehouse> getAll();
-    Warehouse getById(Long id);
+@Service
+public class WarehouseService {
+
+    private final WarehouseRepository warehouseRepository;
+
+    public WarehouseService(WarehouseRepository warehouseRepository) {
+        this.warehouseRepository = warehouseRepository;
+    }
+
+    public List<Warehouse> getAllWarehouses() {
+        return warehouseRepository.findAll();
+    }
+
+    public Warehouse createWarehouse(Warehouse warehouse) {
+        return warehouseRepository.save(warehouse);
+    }
 }
