@@ -1,33 +1,29 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.ConsumptionLog;
-import com.example.demo.service.ConsumptionLogService;
+import com.example.demo.model.PredictionRule;
+import com.example.demo.service.PredictionRuleService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/consumption-logs")
-public class ConsumptionLogController {
+@RequestMapping("/api/predictions")
+public class PredictionRuleController {
 
-    private final ConsumptionLogService service;
+    private final PredictionRuleService predictionRuleService;
 
-    public ConsumptionLogController(ConsumptionLogService service) {
-        this.service = service;
-    }
-
-    @PostMapping
-    public ConsumptionLog save(@RequestBody ConsumptionLog log) {
-        return service.save(log);
-    }
-
-    @GetMapping("/{id}")
-    public ConsumptionLog getById(@PathVariable Long id) {
-        return service.getById(id);
+    public PredictionRuleController(PredictionRuleService predictionRuleService) {
+        this.predictionRuleService = predictionRuleService;
     }
 
     @GetMapping
-    public List<ConsumptionLog> getAll() {
-        return service.getAll();
+    public ResponseEntity<List<PredictionRule>> getAllRules() {
+        return ResponseEntity.ok(predictionRuleService.getAllRules());
+    }
+
+    @PostMapping
+    public ResponseEntity<PredictionRule> createRule(@RequestBody PredictionRule rule) {
+        return ResponseEntity.ok(predictionRuleService.createRule(rule));
     }
 }

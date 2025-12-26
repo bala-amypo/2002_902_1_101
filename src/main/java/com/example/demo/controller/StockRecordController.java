@@ -2,13 +2,13 @@ package com.example.demo.controller;
 
 import com.example.demo.model.StockRecord;
 import com.example.demo.service.StockRecordService;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/stock-records")
+@RequestMapping("/api/stocks")
 public class StockRecordController {
 
     private final StockRecordService stockRecordService;
@@ -17,27 +17,18 @@ public class StockRecordController {
         this.stockRecordService = stockRecordService;
     }
 
-    @PostMapping("/{warehouseId}/{productId}")
-    public StockRecord addStock(
-            @PathVariable Long warehouseId,
-            @PathVariable Long productId,
-            @RequestBody StockRecord stockRecord) {
-
-        return stockRecordService.addStock(warehouseId, productId, stockRecord);
-    }
-
-    @GetMapping("/{id}")
-    public StockRecord getById(@PathVariable Long id) {
-        return stockRecordService.getById(id);
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<List<StockRecord>> getStocksByProduct(@PathVariable Long productId) {
+        return ResponseEntity.ok(stockRecordService.getStockRecordsByProductId(productId));
     }
 
     @GetMapping("/warehouse/{warehouseId}")
-    public List<StockRecord> getByWarehouse(@PathVariable Long warehouseId) {
-        return stockRecordService.getByWarehouse(warehouseId);
+    public ResponseEntity<List<StockRecord>> getStocksByWarehouse(@PathVariable Long warehouseId) {
+        return ResponseEntity.ok(stockRecordService.getStockRecordsByWarehouseId(warehouseId));
     }
 
-    @GetMapping("/product/{productId}")
-    public List<StockRecord> getByProduct(@PathVariable Long productId) {
-        return stockRecordService.getByProduct(productId);
+    @PostMapping
+    public ResponseEntity<StockRecord> createStockRecord(@RequestBody StockRecord stockRecord) {
+        return ResponseEntity.ok(stockRecordService.createStockRecord(stockRecord));
     }
 }
