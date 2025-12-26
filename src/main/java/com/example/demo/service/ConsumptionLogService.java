@@ -4,7 +4,8 @@ import com.example.demo.model.ConsumptionLog;
 import java.util.List;
 
 public interface ConsumptionLogService {
-    ConsumptionLog save(Long productId, ConsumptionLog log);
+
+    ConsumptionLog save(ConsumptionLog log);
+
     List<ConsumptionLog> getByProduct(Long productId);
-    ConsumptionLog getById(Long id);
 }
