@@ -1,38 +1,30 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "stock_records")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "warehouse_id"}))
 public class StockRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "warehouse_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "warehouse_id")
     private Warehouse warehouse;
     
-    @Column(nullable = false)
     private Integer currentQuantity;
-    
-    @Column(nullable = false)
     private Integer reorderThreshold;
-    
-    @Column(nullable = false)
     private LocalDateTime lastUpdated;
     
     @PrePersist
