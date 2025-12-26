@@ -1,36 +1,36 @@
 package com.example.demo.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.demo.model.Product;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.service.ProductService;
 
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository repository;
 
-    @Override
-    public Product create(Product product) {
-        product.setCreatedAt(LocalDateTime.now());
-        return productRepository.save(product);
+    public ProductServiceImpl(ProductRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public List<Product> getAll() {
-        return productRepository.findAll();
+    public Product save(Product product) {
+        product.setCreatedAt(LocalDateTime.now());
+        return repository.save(product);
     }
 
     @Override
     public Product getById(Long id) {
-        return productRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found"));
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Product> getAll() {
+        return repository.findAll();
     }
 }
