@@ -1,28 +1,24 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.User;
+import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
+import java.util.Optional;
+
+@Service  // Marks this as a Spring service bean
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
-    public User registerUser(User user) {
-        return userRepository.save(user);
+    public Optional<User> login(String username, String password) {
+        // Must match the interface signature exactly
+        return userRepository.findByUsernameAndPassword(username, password);
     }
 
-    @Override
-    public String loginUser(User user) {
-        return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword())
-                .map(u -> "Login successful")
-                .orElse("Invalid credentials");
-    }
+    // Other methods from UserService interface must be implemented here
 }
