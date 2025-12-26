@@ -25,6 +25,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product getProductBySku(String sku) {
+        return productRepository.findBySku(sku).orElse(null);
+    }
+
+    @Override
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }
