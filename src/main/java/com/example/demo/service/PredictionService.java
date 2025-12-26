@@ -1,15 +1,14 @@
 package com.example.demo.service;
 
+import com.example.demo.model.PredictionRule;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.example.demo.model.PredictionRule;
-
 public interface PredictionService {
 
-    LocalDate predictRestockDate(Long stockRecordId);
+    String predictRestock(Long productId, LocalDate date);
 
-    PredictionRule createRule(PredictionRule rule);
+    PredictionRule saveRule(PredictionRule rule);
 
     List<PredictionRule> getAllRules();
 }
