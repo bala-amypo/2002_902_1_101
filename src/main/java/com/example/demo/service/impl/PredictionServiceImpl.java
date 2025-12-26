@@ -1,25 +1,14 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.StockRecord;
-import com.example.demo.repository.StockRecordRepository;
+import com.example.demo.service.PredictionService;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
-@Service
-public class PredictionServiceImpl {
+@Service   // ⭐ THIS IS THE MOST IMPORTANT LINE
+public class PredictionServiceImpl implements PredictionService {
 
-    private final StockRecordRepository stockRecordRepository;
-
-    public PredictionServiceImpl(StockRecordRepository stockRecordRepository) {
-        this.stockRecordRepository = stockRecordRepository;
-    }
-
-    public int getReorderQuantity(Long productId) {
-        List<StockRecord> records = stockRecordRepository.findByProductId(productId);
-        int total = 0;
-        for (StockRecord record : records) {
-            total += Math.max(0, record.getReorderLevel() - record.getQuantity());
-        }
-        return total;
+    @Override
+    public String predictRestock(Long productId) {
+        // Dummy logic for now
+        return "Restock recommended for product id: " + productId;
     }
 }
