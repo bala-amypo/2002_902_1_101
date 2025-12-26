@@ -1,32 +1,25 @@
-package com.example.demo.controller;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.model.Product;
-import com.example.demo.service.ProductService;
-
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/products")
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService service;
+
+    public ProductController(ProductService service) {
+        this.service = service;
+    }
 
     @PostMapping
-    public Product create(@RequestBody Product product) {
-        return productService.create(product);
+    public Product create(@RequestBody Product p) {
+        return service.createProduct(p);
     }
 
     @GetMapping
-    public List<Product> getAll() {
-        return productService.getAll();
+    public List<Product> all() {
+        return service.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public Product getById(@PathVariable Long id) {
-        return productService.getById(id);
+    public Product one(@PathVariable Long id) {
+        return service.getProduct(id);
     }
 }

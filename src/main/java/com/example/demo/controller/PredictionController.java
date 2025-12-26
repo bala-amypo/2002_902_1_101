@@ -1,33 +1,25 @@
-package com.example.demo.controller;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.model.PredictionRule;
-import com.example.demo.service.PredictionService;
-
 @RestController
-@RequestMapping("/predict")
+@RequestMapping("/api/predict")
 public class PredictionController {
 
-    @Autowired
-    private PredictionService predictionService;
+    private final PredictionService service;
 
-    @GetMapping("/restock-date/{stockRecordId}")
-    public LocalDate predictRestockDate(@PathVariable Long stockRecordId) {
-        return predictionService.predictRestockDate(stockRecordId);
+    public PredictionController(PredictionService service) {
+        this.service = service;
+    }
+
+    @GetMapping("/restock-date/{id}")
+    public LocalDate predict(@PathVariable Long id) {
+        return service.predictRestockDate(id);
     }
 
     @PostMapping("/rules")
-    public PredictionRule createRule(@RequestBody PredictionRule rule) {
-        return predictionService.createRule(rule);
+    public PredictionRule create(@RequestBody PredictionRule rule) {
+        return service.createRule(rule);
     }
 
     @GetMapping("/rules")
-    public List<PredictionRule> getAllRules() {
-        return predictionService.getAllRules();
+    public List<PredictionRule> rules() {
+        return service.getAllRules();
     }
 }

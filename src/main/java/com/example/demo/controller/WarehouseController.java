@@ -1,32 +1,25 @@
-package com.example.demo.controller;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.model.Warehouse;
-import com.example.demo.service.WarehouseService;
-
 @RestController
-@RequestMapping("/warehouses")
+@RequestMapping("/api/warehouses")
 public class WarehouseController {
 
-    @Autowired
-    private WarehouseService warehouseService;
+    private final WarehouseService service;
+
+    public WarehouseController(WarehouseService service) {
+        this.service = service;
+    }
 
     @PostMapping
-    public Warehouse create(@RequestBody Warehouse warehouse) {
-        return warehouseService.create(warehouse);
+    public Warehouse create(@RequestBody Warehouse w) {
+        return service.createWarehouse(w);
     }
 
     @GetMapping
-    public List<Warehouse> getAll() {
-        return warehouseService.getAll();
+    public List<Warehouse> all() {
+        return service.getAllWarehouses();
     }
 
     @GetMapping("/{id}")
-    public Warehouse getById(@PathVariable Long id) {
-        return warehouseService.getById(id);
+    public Warehouse one(@PathVariable Long id) {
+        return service.getWarehouse(id);
     }
 }

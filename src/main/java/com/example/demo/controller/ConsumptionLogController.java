@@ -1,32 +1,26 @@
-package com.example.demo.controller;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.model.ConsumptionLog;
-import com.example.demo.service.ConsumptionLogService;
-
 @RestController
-@RequestMapping("/consumption-logs")
+@RequestMapping("/api/consumption")
 public class ConsumptionLogController {
 
-    @Autowired
-    private ConsumptionLogService consumptionLogService;
+    private final ConsumptionLogService service;
 
-    @PostMapping
-    public ConsumptionLog create(@RequestBody ConsumptionLog log) {
-        return consumptionLogService.create(log);
+    public ConsumptionLogController(ConsumptionLogService service) {
+        this.service = service;
     }
 
-    @GetMapping
-    public List<ConsumptionLog> getAll() {
-        return consumptionLogService.getAll();
+    @PostMapping("/{stockRecordId}")
+    public ConsumptionLog log(@PathVariable Long stockRecordId,
+                              @RequestBody ConsumptionLog log) {
+        return service.logConsumption(stockRecordId, log);
+    }
+
+    @GetMapping("/record/{stockRecordId}")
+    public List<ConsumptionLog> logs(@PathVariable Long stockRecordId) {
+        return service.getLogsByStockRecord(stockRecordId);
     }
 
     @GetMapping("/{id}")
-    public ConsumptionLog getById(@PathVariable Long id) {
-        return consumptionLogService.getById(id);
+    public ConsumptionLog one(@PathVariable Long id) {
+        return service.getLog(id);
     }
 }

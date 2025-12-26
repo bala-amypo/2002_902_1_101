@@ -1,32 +1,32 @@
-package com.example.demo.controller;
-
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import com.example.demo.model.StockRecord;
-import com.example.demo.service.StockRecordService;
-
 @RestController
-@RequestMapping("/stock-records")
+@RequestMapping("/api/stocks")
 public class StockRecordController {
 
-    @Autowired
-    private StockRecordService stockRecordService;
+    private final StockRecordService service;
 
-    @PostMapping
-    public StockRecord create(@RequestBody StockRecord record) {
-        return stockRecordService.create(record);
+    public StockRecordController(StockRecordService service) {
+        this.service = service;
     }
 
-    @GetMapping
-    public List<StockRecord> getAll() {
-        return stockRecordService.getAll();
+    @PostMapping("/{productId}/{warehouseId}")
+    public StockRecord create(@PathVariable Long productId,
+                              @PathVariable Long warehouseId,
+                              @RequestBody StockRecord sr) {
+        return service.createStockRecord(productId, warehouseId, sr);
     }
 
     @GetMapping("/{id}")
-    public StockRecord getById(@PathVariable Long id) {
-        return stockRecordService.getById(id);
+    public StockRecord get(@PathVariable Long id) {
+        return service.getStockRecord(id);
+    }
+
+    @GetMapping("/product/{productId}")
+    public List<StockRecord> byProduct(@PathVariable Long productId) {
+        return service.getRecordsBy_product(productId);
+    }
+
+    @GetMapping("/warehouse/{warehouseId}")
+    public List<StockRecord> byWarehouse(@PathVariable Long warehouseId) {
+        return service.getRecordsByWarehouse(warehouseId);
     }
 }
