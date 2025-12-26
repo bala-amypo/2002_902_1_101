@@ -16,13 +16,24 @@ public class StockRecordServiceImpl implements StockRecordService {
     }
 
     @Override
-    public StockRecord save(StockRecord record) {
+    public StockRecord addStock(Long warehouseId, Long productId, StockRecord record) {
+        record.setProductId(productId);
+        record.setWarehouseId(warehouseId); // make sure StockRecord has warehouseId
         return stockRecordRepository.save(record);
     }
 
     @Override
+    public StockRecord getById(Long id) {
+        return stockRecordRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<StockRecord> getByProduct(Long productId) {
+        return stockRecordRepository.findByProductId(productId);
+    }
+
+    @Override
     public List<StockRecord> getByWarehouse(Long warehouseId) {
-        // Assuming you have warehouseId in StockRecord entity
         return stockRecordRepository.findByWarehouseId(warehouseId);
     }
 }
