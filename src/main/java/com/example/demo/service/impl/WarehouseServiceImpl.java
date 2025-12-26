@@ -17,17 +17,12 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public Warehouse save(Warehouse warehouse) {
-        return repository.save(warehouse);
-    }
-
-    @Override
-    public List<Warehouse> getAll() {
+    public List<Warehouse> getAllWarehouses() {
         return repository.findAll();
     }
 
     @Override
-    public Warehouse getById(Long id) {
-        return repository.findById(id).orElse(null);
+    public Warehouse createWarehouse(Warehouse warehouse) {
+        return repository.save(warehouse);
     }
 }

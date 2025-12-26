@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface StockRecordService {
 
-    StockRecord save(StockRecord stockRecord);
+    List<StockRecord> getStockRecordsByProductId(Long productId);
 
-    List<StockRecord> getAll();
+    List<StockRecord> getStockRecordsByWarehouseId(Long warehouseId);
 
-    StockRecord getById(Long id);
+    StockRecord createStockRecord(StockRecord stockRecord);
 }

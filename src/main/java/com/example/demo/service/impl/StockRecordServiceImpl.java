@@ -17,17 +17,17 @@ public class StockRecordServiceImpl implements StockRecordService {
     }
 
     @Override
-    public StockRecord save(StockRecord stockRecord) {
+    public List<StockRecord> getStockRecordsByProductId(Long productId) {
+        return repository.findByProductId(productId);
+    }
+
+    @Override
+    public List<StockRecord> getStockRecordsByWarehouseId(Long warehouseId) {
+        return repository.findByWarehouseId(warehouseId);
+    }
+
+    @Override
+    public StockRecord createStockRecord(StockRecord stockRecord) {
         return repository.save(stockRecord);
-    }
-
-    @Override
-    public List<StockRecord> getAll() {
-        return repository.findAll();
-    }
-
-    @Override
-    public StockRecord getById(Long id) {
-        return repository.findById(id).orElse(null);
     }
 }
