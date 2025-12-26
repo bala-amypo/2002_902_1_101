@@ -3,11 +3,11 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "warehouses", uniqueConstraints = @UniqueConstraint(columnNames = "warehouseName"))
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Warehouse {
 
     @Id
@@ -15,4 +15,8 @@ public class Warehouse {
     private Long id;
 
     private String warehouseName;
+
+    private String location;
+
+    private LocalDateTime createdAt;
 }

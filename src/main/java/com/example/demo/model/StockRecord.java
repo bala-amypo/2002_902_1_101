@@ -1,25 +1,31 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Data
-@Table(name = "stock_records")
+@Table(
+    name = "stock_records",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "warehouse_id"})
+)
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class StockRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 🔥 REQUIRED by StockRecordServiceImpl
-    @Column(nullable = false)
-    private Long productId;
+    @ManyToOne
+    private Product product;
 
-    // 🔥 REQUIRED by StockRecordServiceImpl
-    @Column(nullable = false)
-    private Long warehouseId;
+    @ManyToOne
+    private Warehouse warehouse;
 
-    @Column(nullable = false)
-    private Integer quantity;
+    private Integer currentQuantity;
+
+    private Integer reorderThreshold;
+
+    private LocalDateTime lastUpdated;
 }
