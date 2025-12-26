@@ -1,55 +1,55 @@
 package com.example.demo.config;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import jakarta.servlet.http.HttpServletRequest;
-import java.util.Collections;
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
-public class JWTProvider {
+public class JwtProvider {
 
-    private final String SECRET_KEY = "mysecretkey123456"; // keep it safe
-    private final long VALIDITY = 3600000; // 1 hour
+    @Value("${app.jwtSecret}")
+    private String jwtSecret;
 
-    public String generateToken(String username) {
+    @Value("${app.jwtExpirationMs}")
+    private int jwtExpirationMs;
+
+    public String generateToken(String email, Long userId, Set<String> roles) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(email)
+                .claim("userId", userId)
+                .claim("roles", roles)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + VALIDITY))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return true;
-        } catch (Exception e) {
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }
 
-    public Authentication getAuthentication(String token) {
-        String username = getUsername(token);
-        return new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
+    public String getEmailFromToken(String token) {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String getUsername(String token) {
-        Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
-        return claims.getSubject();
+    public Long getUserId(String token) {
+        Object id = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("userId");
+        return id == null ? null : Long.valueOf(id.toString());
     }
 
-    public String resolveToken(HttpServletRequest request) {
-        String bearer = request.getHeader("Authorization");
-        if (bearer != null && bearer.startsWith("Bearer ")) {
-            return bearer.substring(7);
+    public Set<String> getRoles(String token) {
+        Object roles = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().get("roles");
+        if (roles instanceof List<?> list) {
+            return list.stream().map(Object::toString).collect(Collectors.toSet());
         }
-        return null;
+        return Set.of();
     }
 }
