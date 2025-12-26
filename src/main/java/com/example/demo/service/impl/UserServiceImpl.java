@@ -1,61 +1,33 @@
 package com.example.demo.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.UserRegisterDto;
+import com.example.demo.dto.AuthRequest;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
-    public AuthResponse register(UserRegisterDto dto) {
-
+    public User register(UserRegisterDto dto) {
         User user = new User();
-        user.setName(dto.getName());
         user.setEmail(dto.getEmail());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setUsername(dto.getUsername());
+        user.setPassword(dto.getPassword());
         user.setRoles(dto.getRoles());
-
-        userRepository.save(user);
-
-        return new AuthResponse(
-                user.getId(),
-                user.getEmail(),
-                user.getRoles()
-        );
+        return userRepository.save(user);
     }
 
     @Override
-    public AuthResponse login(AuthRequest request) {
-
-        User user = userRepository
-                .findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        return new AuthResponse(
-                user.getId(),
-                user.getEmail(),
-                user.getRoles()
-        );
-    }
-
-    @Override
-    public User getByEmail(String email) {
-        return userRepository
-                .findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    public User login(AuthRequest request) {
+        return userRepository.findByEmail(request.getEmail()).orElse(null);
     }
 }
