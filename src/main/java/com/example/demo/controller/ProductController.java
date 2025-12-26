@@ -1,25 +1,34 @@
+package com.example.demo.controller;
+
+import com.example.demo.model.Product;
+import com.example.demo.service.ProductService;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private final ProductService service;
+    private final ProductService productService;
 
-    public ProductController(ProductService service) {
-        this.service = service;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     @PostMapping
-    public Product create(@RequestBody Product p) {
-        return service.createProduct(p);
+    public ResponseEntity<Product> create(@RequestBody Product product) {
+        return ResponseEntity.ok(productService.save(product));
     }
 
     @GetMapping
-    public List<Product> all() {
-        return service.getAllProducts();
+    public ResponseEntity<List<Product>> getAll() {
+        return ResponseEntity.ok(productService.findAll());
     }
 
     @GetMapping("/{id}")
-    public Product one(@PathVariable Long id) {
-        return service.getProduct(id);
+    public ResponseEntity<Product> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.findById(id));
     }
 }
