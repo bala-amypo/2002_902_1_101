@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Warehouse;
+import java.util.List;
 
 public interface WarehouseService {
-    Warehouse createWarehouse(Warehouse warehouse);
-    Warehouse getWarehouse(long id);
+    Warehouse save(Warehouse warehouse);
+    List<Warehouse> getAll();
+    Warehouse getById(Long id);
 }
