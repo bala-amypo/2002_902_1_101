@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
-@Data
 @Table(name = "users")
+@Data
 public class User {
 
     @Id
@@ -15,10 +15,12 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+    @Column(nullable = false, unique = true)
+    private String email;   // 🔥 REQUIRED by UserServiceImpl
+
     @Column(nullable = false)
     private String password;
 
-    // Example: ROLE_ADMIN, ROLE_USER
     @Column(nullable = false)
     private String roles;
 }

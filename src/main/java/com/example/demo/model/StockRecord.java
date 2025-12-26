@@ -1,25 +1,25 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
 
 @Entity
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "stock_records")
 public class StockRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int currentQuantity;
-    private int reorderThreshold;
+    // 🔥 REQUIRED by StockRecordServiceImpl
+    @Column(nullable = false)
+    private Long productId;
 
-    @ManyToOne
-    private Product product;
+    // 🔥 REQUIRED by StockRecordServiceImpl
+    @Column(nullable = false)
+    private Long warehouseId;
 
-    @ManyToOne
-    private Warehouse warehouse;
+    @Column(nullable = false)
+    private Integer quantity;
 }
