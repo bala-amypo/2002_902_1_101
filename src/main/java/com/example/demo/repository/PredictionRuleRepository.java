@@ -1,10 +1,25 @@
-package com.example.demo.repository;
+package com.example.demo.model;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import jakarta.persistence.*;
+import lombok.*;
 
-import com.example.demo.model.PredictionRule;
+import java.time.LocalDateTime;
 
-@Repository
-public interface PredictionRuleRepository extends JpaRepository<PredictionRule, Long> {
+@Entity
+@Table(name = "prediction_rules")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class PredictionRule {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String ruleName;
+    private Integer averageDaysWindow;
+    private Integer minDailyUsage;
+    private Integer maxDailyUsage;
+    private LocalDateTime createdAt;
 }
