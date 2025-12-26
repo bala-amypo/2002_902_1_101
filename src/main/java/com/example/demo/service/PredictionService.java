@@ -11,7 +11,7 @@ public class PredictionService {
 
     private final PredictionRuleRepository predictionRuleRepository;
 
-    public PredictionRuleService(PredictionRuleRepository predictionRuleRepository) {
+    public PredictionService(PredictionRuleRepository predictionRuleRepository) {
         this.predictionRuleRepository = predictionRuleRepository;
     }
 

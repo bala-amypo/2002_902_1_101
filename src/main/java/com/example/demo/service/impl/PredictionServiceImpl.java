@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PredictionRuleServiceImpl implements PredictionRuleService {
+public class PredictionServiceImpl implements PredictionService {
 
     private final PredictionRuleRepository predictionRuleRepository;
 
-    public PredictionRuleServiceImpl(PredictionRuleRepository predictionRuleRepository) {
+    public PredictionServiceImpl(PredictionRuleRepository predictionRuleRepository) {
         this.predictionRuleRepository = predictionRuleRepository;
     }
 
