@@ -1,3 +1,12 @@
+package com.example.demo.controller;
+
+import com.example.demo.model.ConsumptionLog;
+import com.example.demo.service.ConsumptionLogService;
+
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/consumption")
 public class ConsumptionLogController {
@@ -8,19 +17,20 @@ public class ConsumptionLogController {
         this.service = service;
     }
 
-    @PostMapping("/{stockRecordId}")
-    public ConsumptionLog log(@PathVariable Long stockRecordId,
-                              @RequestBody ConsumptionLog log) {
-        return service.logConsumption(stockRecordId, log);
+    @PostMapping("/{productId}")
+    public ConsumptionLog create(
+            @PathVariable Long productId,
+            @RequestBody ConsumptionLog log) {
+        return service.save(productId, log);
     }
 
-    @GetMapping("/record/{stockRecordId}")
-    public List<ConsumptionLog> logs(@PathVariable Long stockRecordId) {
-        return service.getLogsByStockRecord(stockRecordId);
+    @GetMapping("/{productId}")
+    public List<ConsumptionLog> getByProduct(@PathVariable Long productId) {
+        return service.getByProduct(productId);
     }
 
-    @GetMapping("/{id}")
-    public ConsumptionLog one(@PathVariable Long id) {
-        return service.getLog(id);
+    @GetMapping("/one/{id}")
+    public ConsumptionLog getOne(@PathVariable Long id) {
+        return service.getById(id);
     }
 }
