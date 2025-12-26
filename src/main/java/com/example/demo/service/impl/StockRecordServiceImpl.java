@@ -21,7 +21,8 @@ public class StockRecordServiceImpl implements StockRecordService {
     }
 
     @Override
-    public List<StockRecord> getByProduct(Long productId) {
-        return stockRecordRepository.findByProductId(productId);
+    public List<StockRecord> getByWarehouse(Long warehouseId) {
+        // Assuming you have warehouseId in StockRecord entity
+        return stockRecordRepository.findByWarehouseId(warehouseId);
     }
 }
