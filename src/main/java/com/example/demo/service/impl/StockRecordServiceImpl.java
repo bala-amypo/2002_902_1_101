@@ -4,6 +4,7 @@ import com.example.demo.model.StockRecord;
 import com.example.demo.repository.StockRecordRepository;
 import com.example.demo.service.StockRecordService;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -16,24 +17,17 @@ public class StockRecordServiceImpl implements StockRecordService {
     }
 
     @Override
-    public StockRecord addStock(Long warehouseId, Long productId, StockRecord record) {
-        record.setProductId(productId);
-        record.setWarehouseId(warehouseId); // make sure StockRecord has warehouseId
-        return stockRecordRepository.save(record);
-    }
-
-    @Override
-    public StockRecord getById(Long id) {
-        return stockRecordRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public List<StockRecord> getByProduct(Long productId) {
+    public List<StockRecord> getStockRecordsByProductId(Long productId) {
         return stockRecordRepository.findByProductId(productId);
     }
 
     @Override
-    public List<StockRecord> getByWarehouse(Long warehouseId) {
+    public List<StockRecord> getStockRecordsByWarehouseId(Long warehouseId) {
         return stockRecordRepository.findByWarehouseId(warehouseId);
+    }
+
+    @Override
+    public StockRecord createStockRecord(StockRecord stockRecord) {
+        return stockRecordRepository.save(stockRecord);
     }
 }

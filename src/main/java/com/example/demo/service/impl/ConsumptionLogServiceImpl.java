@@ -4,8 +4,8 @@ import com.example.demo.model.ConsumptionLog;
 import com.example.demo.repository.ConsumptionLogRepository;
 import com.example.demo.service.ConsumptionLogService;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ConsumptionLogServiceImpl implements ConsumptionLogService {
@@ -17,18 +17,12 @@ public class ConsumptionLogServiceImpl implements ConsumptionLogService {
     }
 
     @Override
-    public ConsumptionLog save(ConsumptionLog log) {
+    public List<ConsumptionLog> getConsumptionLogsByStockRecord(Long stockRecordId) {
+        return consumptionLogRepository.findByStockRecordId(stockRecordId);
+    }
+
+    @Override
+    public ConsumptionLog createConsumptionLog(ConsumptionLog log) {
         return consumptionLogRepository.save(log);
-    }
-
-    @Override
-    public ConsumptionLog getById(Long id) {
-        Optional<ConsumptionLog> log = consumptionLogRepository.findById(id);
-        return log.orElse(null);
-    }
-
-    @Override
-    public List<ConsumptionLog> getAll() {
-        return consumptionLogRepository.findAll();
     }
 }
