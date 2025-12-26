@@ -1,25 +1,34 @@
+package com.example.demo.controller;
+
+import com.example.demo.model.Warehouse;
+import com.example.demo.service.WarehouseService;
+
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/warehouses")
 public class WarehouseController {
 
-    private final WarehouseService service;
+    private final WarehouseService warehouseService;
 
-    public WarehouseController(WarehouseService service) {
-        this.service = service;
+    public WarehouseController(WarehouseService warehouseService) {
+        this.warehouseService = warehouseService;
     }
 
     @PostMapping
-    public Warehouse create(@RequestBody Warehouse w) {
-        return service.createWarehouse(w);
+    public Warehouse save(@RequestBody Warehouse warehouse) {
+        return warehouseService.save(warehouse);
     }
 
     @GetMapping
-    public List<Warehouse> all() {
-        return service.getAllWarehouses();
+    public List<Warehouse> getAll() {
+        return warehouseService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Warehouse one(@PathVariable Long id) {
-        return service.getWarehouse(id);
+    public Warehouse getById(@PathVariable Long id) {
+        return warehouseService.getById(id);
     }
 }
