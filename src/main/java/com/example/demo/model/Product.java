@@ -1,59 +1,22 @@
 package com.example.demo.model;
 
+import lombok.*;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "products")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String productName;
     private String sku;
+    private String category;
     private LocalDateTime createdAt;
-
-    public Product() {
-    }
-
-    public Product(Long id, String productName, String sku, LocalDateTime createdAt) {
-        this.id = id;
-        this.productName = productName;
-        this.sku = sku;
-        this.createdAt = createdAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
- 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-    public String getSku() {
-        return sku;
-    }
- 
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
- 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }

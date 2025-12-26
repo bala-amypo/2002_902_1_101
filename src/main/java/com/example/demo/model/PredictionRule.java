@@ -1,12 +1,10 @@
-package com.example.demo.model;
-
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "prediction_rules")
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PredictionRule {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,66 +14,5 @@ public class PredictionRule {
     private Integer minDailyUsage;
     private Integer maxDailyUsage;
     private LocalDateTime createdAt;
-
-    public PredictionRule() {
-    }
-
-    public PredictionRule(Long id, String ruleName, Integer averageDaysWindow,
-                          Integer minDailyUsage, Integer maxDailyUsage,
-                          LocalDateTime createdAt) {
-        this.id = id;
-        this.ruleName = ruleName;
-        this.averageDaysWindow = averageDaysWindow;
-        this.minDailyUsage = minDailyUsage;
-        this.maxDailyUsage = maxDailyUsage;
-        this.createdAt = createdAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
- 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getRuleName() {
-        return ruleName;
-    }
- 
-    public void setRuleName(String ruleName) {
-        this.ruleName = ruleName;
-    }
-
-    public Integer getAverageDaysWindow() {
-        return averageDaysWindow;
-    }
- 
-    public void setAverageDaysWindow(Integer averageDaysWindow) {
-        this.averageDaysWindow = averageDaysWindow;
-    }
-
-    public Integer getMinDailyUsage() {
-        return minDailyUsage;
-    }
- 
-    public void setMinDailyUsage(Integer minDailyUsage) {
-        this.minDailyUsage = minDailyUsage;
-    }
-
-    public Integer getMaxDailyUsage() {
-        return maxDailyUsage;
-    }
- 
-    public void setMaxDailyUsage(Integer maxDailyUsage) {
-        this.maxDailyUsage = maxDailyUsage;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
- 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }
+`
