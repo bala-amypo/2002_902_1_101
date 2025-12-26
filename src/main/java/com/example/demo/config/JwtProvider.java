@@ -1,52 +1,49 @@
 package com.example.demo.config;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
-import javax.crypto.SecretKey;
-import java.util.Date;
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
 
-@Component
-public class JwtProvider {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-    // Static secret key so tests can autowire safely
-    private static final SecretKey SECRET_KEY =
-            Keys.hmacShaKeyFor("my-secret-key-my-secret-key-my-secret-key".getBytes());
+        http
+            // ❌ OLD: http.csrf().disable()
+            // ✅ NEW (lambda style)
+            .csrf(csrf -> csrf.disable())
 
-    private static final long EXPIRATION_TIME = 86400000; // 1 day
+            // ❌ OLD: http.sessionManagement().sessionCreationPolicy(...)
+            // ✅ NEW
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
 
-    // ✅ Method used by tests
-    public String generateToken(String username) {
-        return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SECRET_KEY, SignatureAlgorithm.HS256)
-                .compact();
+            // ❌ OLD: authorizeHttpRequests().anyRequest().authenticated()
+            // ✅ NEW
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/**").permitAll()
+                .anyRequest().authenticated()
+            )
+
+            // ❌ OLD: http.httpBasic()
+            // ✅ NEW
+            .httpBasic(basic -> {});
+
+        return http.build();
     }
 
-    // ✅ Method commonly used in tests
-    public String getUsernameFromToken(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-    }
-
-    // ✅ Method commonly asserted in tests
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parserBuilder()
-                    .setSigningKey(SECRET_KEY)
-                    .build()
-                    .parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 }
