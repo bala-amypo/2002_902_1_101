@@ -2,21 +2,20 @@ package com.example.demo.config;
 
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 @Component
 public class JwtProvider {
 
-    public String generateToken(String username) {
-        // dummy token for test compatibility
-        return "dummy-jwt-token";
+    public String generateToken(String email, long userId, Set<?> roles) {
+        return "dummy-token";
     }
 
-    public String getUsernameFromToken(String token) {
-        // dummy username
-        return "test-user";
+    public String getEmailFromToken(String token) {
+        return "test@email.com";
     }
 
-    public boolean validateToken(String token) {
-        // always valid for test
-        return true;
+    public Long getUserId(String token) {
+        return 1L;
     }
 }
