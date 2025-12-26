@@ -1,18 +1,15 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
 
 @Entity
-public class ConsumptionLog {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long productId;
-    private int quantity;
-    private LocalDate date;
+    private String name;
 
     // getters and setters
 }
