@@ -4,7 +4,7 @@ import com.example.demo.service.PredictionService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/prediction")
+@RequestMapping("/api/prediction")
 public class PredictionController {
 
     private final PredictionService predictionService;
@@ -13,8 +13,8 @@ public class PredictionController {
         this.predictionService = predictionService;
     }
 
-    @GetMapping("/{productId}")
-    public String predict(@PathVariable Long productId) {
+    @GetMapping("/restock/{productId}")
+    public int predictRestock(@PathVariable Long productId) {
         return predictionService.predictRestock(productId);
     }
 }
