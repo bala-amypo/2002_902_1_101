@@ -10,19 +10,24 @@ import java.util.List;
 @Service
 public class WarehouseServiceImpl implements WarehouseService {
 
-    private final WarehouseRepository warehouseRepository;
+    private final WarehouseRepository repository;
 
-    public WarehouseServiceImpl(WarehouseRepository warehouseRepository) {
-        this.warehouseRepository = warehouseRepository;
+    public WarehouseServiceImpl(WarehouseRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public List<Warehouse> getAllWarehouses() {
-        return warehouseRepository.findAll();
+    public Warehouse save(Warehouse warehouse) {
+        return repository.save(warehouse);
     }
 
     @Override
-    public Warehouse createWarehouse(Warehouse warehouse) {
-        return warehouseRepository.save(warehouse);
+    public List<Warehouse> getAll() {
+        return repository.findAll();
+    }
+
+    @Override
+    public Warehouse getById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 }

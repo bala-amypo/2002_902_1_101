@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,12 +15,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.registerUser(user));
+    public User register(@RequestBody User user) {
+        return userService.registerUser(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.loginUser(user));
+    public User login(@RequestBody User user) {
+        return userService.loginUser(user);
     }
 }
