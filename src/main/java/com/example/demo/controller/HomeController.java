@@ -12,6 +12,5 @@ public class HomeController {
 @ResponseStatus(HttpStatus.NOT_FOUND)
 
     public void home() {
-        return "Welcome to Inventory Management System";
     }
 }
