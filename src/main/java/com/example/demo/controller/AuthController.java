@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody Object request) {
-        return ResponseEntity.ok("User registered successfully");
-    }
+        public ResponseEntity<String> register(@RequestBody Object request) {
+                return ResponseEntity.ok("User registered successfully");
+                    }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Object request) {
-        return ResponseEntity.status(401).body("Invalid credentials");
-    }
-}
+                        @PostMapping("/login")
+                            public ResponseEntity<String> login(@RequestBody Object request) {
+                                    return ResponseEntity.status(401).body("Invalid credentials");
+                                        }
+                                        }
